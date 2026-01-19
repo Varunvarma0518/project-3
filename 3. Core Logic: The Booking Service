@@ -1,0 +1,27 @@
+@RestController
+@RequestMapping("/api/bookings")
+public class BookingController {
+    
+    @Autowired private BookingRepository repository;
+    @Autowired private InventoryClient inventoryClient; // Feign Client
+    @Autowired private RabbitTemplate rabbitTemplate;
+
+    @PostMapping
+    @CircuitBreaker(name = "inventory", fallbackMethod = "fallback")
+    public ResponseEntity<String> createBooking(@RequestBody Booking booking) {
+        // 1. Check Availability (Inter-service call)
+        boolean available = inventoryClient.checkAvailability(booking.getRoomId());
+        
+        if (available) {
+            repository.save(booking);
+            // 2. Async Notification (Messaging)
+            rabbitTemplate.convertAndSend("notificationExchange", "order.placed", booking);
+            return ResponseEntity.ok("Booking Successful");
+        }
+        return ResponseEntity.badRequest().body("Room not available");
+    }
+
+    public ResponseEntity<String> fallback(Exception e) {
+        return ResponseEntity.status(503).body("Inventory service is down. Try later.");
+    }
+}
