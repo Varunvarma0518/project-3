@@ -1,0 +1,25 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.hotel.microservices</groupId>
+    <artifactId>hotel-management-system</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>17</java.version>
+        <spring-cloud.version>2022.0.4</spring-cloud.version>
+        <spring-boot.version>3.1.5</spring-boot.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
