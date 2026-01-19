@@ -1,0 +1,15 @@
+@Entity
+@Table(name = "rooms")
+public class Room {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long roomId;
+    
+    @Column(unique = true, nullable = false)
+    private String roomNumber;
+    
+    @Enumerated(EnumType.STRING)
+    private RoomStatus status; // Enum: AVAILABLE, BOOKED
+    
+    // Getters and Setters
+}
