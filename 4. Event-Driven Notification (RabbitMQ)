@@ -1,0 +1,9 @@
+@Component
+public class NotificationConsumer {
+
+    @RabbitListener(queues = "notificationQueue")
+    public void handleMessage(Booking booking) {
+        // Logic to send email/SMS
+        System.out.println("Notification sent for Booking ID: " + booking.getId());
+    }
+}
