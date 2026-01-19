@@ -1,0 +1,25 @@
+-- Create Room Types Table
+CREATE TABLE room_types (
+    type_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL, -- e.g., 'Deluxe King'
+    description TEXT,
+    base_price DECIMAL(10, 2) NOT NULL,
+    max_occupancy INTEGER DEFAULT 2
+);
+
+-- Create Rooms Table
+CREATE TABLE rooms (
+    room_id BIGSERIAL PRIMARY KEY,
+    room_number VARCHAR(10) UNIQUE NOT NULL,
+    type_id INTEGER REFERENCES room_types(type_id),
+    status VARCHAR(20) DEFAULT 'AVAILABLE', -- AVAILABLE, OCCUPIED, MAINTENANCE
+    floor INTEGER,
+    last_cleaned_at TIMESTAMP
+);
+
+-- Initial Data
+INSERT INTO room_types (name, base_price, max_occupancy) 
+VALUES ('Standard', 100.00, 2), ('Suite', 250.00, 4);
+
+INSERT INTO rooms (room_number, type_id, status) 
+VALUES ('101', 1, 'AVAILABLE'), ('201', 2, 'AVAILABLE');
